@@ -57,16 +57,20 @@ def split_py(py):
         ym = 'v' + py[2:]
     else:
         seg_pos = re.search('a|e|i|o|u|v', py)
-        sm = py[:seg_pos.start()]
-        ym = py[seg_pos.start():]
-        if ym == 'ui':
-            ym = 'uei'
-        elif ym == 'iu':
-            ym = 'iou'
-        elif ym == 'un':
-            ym = 'uen'
-        elif ym == 'ue':
-            ym = 've'
+        if seg_pos:
+            sm = py[:seg_pos.start()]
+            ym = py[seg_pos.start():]
+            if ym == 'ui':
+                ym = 'uei'
+            elif ym == 'iu':
+                ym = 'iou'
+            elif ym == 'un':
+                ym = 'uen'
+            elif ym == 'ue':
+                ym = 've'
+        else:
+            return '', ''
+    
     ym += suf_r + tone
     return sm, ym
 
