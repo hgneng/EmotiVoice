@@ -85,6 +85,9 @@ def init(args, config):
 
         for key, value in model_CKPT['model'].items():
             new_key = key[7:]
+            # https://github.com/netease-youdao/EmotiVoice/issues/9
+            if new_key == 'bert.embeddings.position_ids':
+                new_key = 'bert.embeddings.position_embeddings'
             model_ckpt[new_key] = value
 
         style_encoder.load_state_dict(model_ckpt)

@@ -75,6 +75,9 @@ def init(args, config):
 
         for key, value in model_CKPT['model'].items():
             new_key = key[7:]
+            # https://github.com/netease-youdao/EmotiVoice/issues/9
+            if new_key == 'bert.embeddings.position_ids':
+                new_key = 'bert.embeddings.position_embeddings'
             model_ckpt[new_key] = value
 
         style_encoder.load_state_dict(model_ckpt)
@@ -133,7 +136,7 @@ def getPhonemes(content):
     return frontend_cn.g2p_cn(content)
 
 if __name__ == '__main__':
-    print("run!")
+    print("EmotiVoice Server starting...")
     #p = argparse.ArgumentParser()
     #p.add_argument('-d', '--logdir', type=str, required=True)
     #p.add_argument("-c", "--config_folder", type=str, required=True)
