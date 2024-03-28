@@ -1,5 +1,8 @@
-# Copyright 2024, Cameron Wong
-# 
+# Copyright 2024 by Cameron Wong                                 
+# name in passport: HUANG GUANNENG                                        
+# email: hgneng at gmail.com                                              
+# website: https://eguidedog.net                                          
+#                                                                         
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -21,6 +24,11 @@ from models.hifigan.get_vocoder import MAX_WAV_VALUE
 import soundfile as sf
 from yacs import config as CONFIG
 from tqdm import tqdm
+import socket
+import time 
+import frontend_cn
+import frontend_en
+import frontend
 
 tokenizer = None
 style_encoder = None
@@ -76,8 +84,8 @@ def init(args, config):
         for key, value in model_CKPT['model'].items():
             new_key = key[7:]
             # https://github.com/netease-youdao/EmotiVoice/issues/9
-            if new_key == 'bert.embeddings.position_ids':
-                new_key = 'bert.embeddings.position_embeddings'
+            #if new_key == 'bert.embeddings.position_ids':
+            #    new_key = 'bert.embeddings.position_embeddings'
             model_ckpt[new_key] = value
 
         style_encoder.load_state_dict(model_ckpt)
@@ -133,7 +141,9 @@ def inference(content, phonemes, filepath):
         sf.write(filepath, data=audio, samplerate=config.sampling_rate)
 
 def getPhonemes(content):
-    return frontend_cn.g2p_cn(content)
+    lexicon = frontend_en.read_lexicon(f"{frontend_en.ROOT_DIR}/lexicon/librispeech-lexicon.txt")
+    g2p = frontend_en.G2p()
+    return frontend.g2p_cn_en(content, g2p, lexicon)
 
 if __name__ == '__main__':
     print("EmotiVoice Server starting...")
@@ -158,9 +168,6 @@ if __name__ == '__main__':
     ##################################################
     init(args, config)
 
-    import socket
-    import time 
-    import frontend_cn
     # 创建一个TCP/IP套接字
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
