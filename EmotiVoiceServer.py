@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2024 by Cameron Wong                                 
 # name in passport: HUANG GUANNENG                                        
 # email: hgneng at gmail.com                                              
@@ -14,6 +16,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# change directory to EmotiVoice
+import os
+script_path = os.path.realpath(__file__)
+print(script_path, ": EmotiVoice Server starting...")
+
+script_directory = os.path.dirname(script_path)
+os.chdir(script_directory)
 
 from models.prompt_tts_modified.jets import JETSGenerator
 from models.prompt_tts_modified.simbert import StyleEncoder
@@ -84,8 +94,8 @@ def init(args, config):
         for key, value in model_CKPT['model'].items():
             new_key = key[7:]
             # https://github.com/netease-youdao/EmotiVoice/issues/9
-            #if new_key == 'bert.embeddings.position_ids':
-            #    new_key = 'bert.embeddings.position_embeddings'
+            if new_key == 'bert.embeddings.position_ids':
+                new_key = 'bert.embeddings.position_embeddings'
             model_ckpt[new_key] = value
 
         style_encoder.load_state_dict(model_ckpt)
@@ -146,7 +156,6 @@ def getPhonemes(content):
     return frontend.g2p_cn_en(content, g2p, lexicon)
 
 if __name__ == '__main__':
-    print("EmotiVoice Server starting...")
     #p = argparse.ArgumentParser()
     #p.add_argument('-d', '--logdir', type=str, required=True)
     #p.add_argument("-c", "--config_folder", type=str, required=True)
