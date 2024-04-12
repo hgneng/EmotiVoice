@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 # set pip repository to tsinghua
+sudo apt install -y python3-pip
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 # install from conda if system's python version is not 3.12
@@ -32,6 +33,8 @@ then
     # for Python 3.8
     # pip install torch torchaudio
     # pip install numpy numba scipy transformers soundfile yacs g2p_en jieba pypinyin
+else
+    sudo rm /usr/lib/python3.12/EXTERNALLY-MANAGED
 fi
 
 # install EmotiVoice with Python 3.12.2 wihch is the version of Ubuntu 24.04 (default is 3.8)
@@ -45,4 +48,5 @@ sudo chmod a+w /opt/EmotiVoice
 cp -r EmotiVoice/* /opt/EmotiVoice/
 cp -rL WangZeJun /opt/EmotiVoice/
 cp -rL outputs /opt/EmotiVoice/
+sudo cp -r nltk_data /usr/share/
 sudo ln -s /opt/EmotiVoice/EmotiVoiceServer.py /usr/bin/EmotiVoiceServer.py

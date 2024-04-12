@@ -11,6 +11,7 @@ cd EmotiVoice-1.0
 cp -r ../EmotiVoice ./
 cp -r ../WangZeJun ./
 cp -r ../outputs ./
+cp -r ../nltk_data ./
 cp -r ../deploy.sh ./
 cp -r ../pack.sh ./
 cd ..
