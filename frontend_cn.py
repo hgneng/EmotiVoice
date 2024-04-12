@@ -86,7 +86,7 @@ def has_english_punctuation(text):
 
 # with thanks to KimigaiiWuyi in https://github.com/netease-youdao/EmotiVoice/pull/17.
 # Updated on November 20, 2023: EmotiVoice now incorporates cn2an (https://github.com/Ailln/cn2an) for number processing.
-re_digits = re.compile('(\d[\d\.]*)')
+re_digits = re.compile(r'(\d[\d\.]*)')
 def number_to_chinese(number):
     an2cn = An2Cn()
     result = an2cn.an2cn(number)
